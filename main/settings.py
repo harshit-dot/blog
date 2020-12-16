@@ -1,4 +1,4 @@
-
+import django_heroku
 """
 Django settings for main project.
 
@@ -115,14 +115,18 @@ WSGI_APPLICATION = 'main.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE':'django.db.database.sqlite3',
-        'NAME': os.path.join(BASE_DIR,'db.sqlite3'),
+# DATABASES = {
+#     'default': {
+#         'ENGINE':'django.db.database.sqlite3',
+#         'NAME': os.path.join(BASE_DIR,'db.sqlite3'),
        
-    }
+#     }
     
-}
+# }
+# DATABASES = {
+#     'default': dj_database_url.config()
+    
+# }
 import dj_database_url
 db_from_env=dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(db_from_env)
@@ -174,3 +178,4 @@ EMAIL_HOST_USER='khannaharshit064@gmail.com'
 EMAIL_HOST_PASSWORD='skxfpxjowqtxxhcj'
 EMAIL_USE_TLS=True
 EMAIL_USE_SSL=False
+django_heroku.settings(locals())
