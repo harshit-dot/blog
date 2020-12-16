@@ -158,3 +158,4 @@ EMAIL_HOST_USER='khannaharshit064@gmail.com'
 EMAIL_HOST_PASSWORD='skxfpxjowqtxxhcj'
 EMAIL_USE_TLS=True
 EMAIL_USE_SSL=False
+django_heroku.settings(locals())
