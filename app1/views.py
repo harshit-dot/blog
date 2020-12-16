@@ -72,7 +72,7 @@ def contact(request):
         send_mail(
             'we have just get your query (BLOGGERS POINT)',
             'we get your query, we will reply it as soon as possible till enjoy blogging....',
-            'khannaharshit064@gmail.com',
+            'bloggerspoint52@gmail.com',
             [email],
             fail_silently=False,
         )
@@ -106,7 +106,7 @@ def signup(request):
         send_mail(
             'Wow you have just signed up in BLOGGERS POINT',
             'congratulations your account is now setup. you can login through the main website and enjoy by creating more blogs.....',
-            'khannaharshit064@gmail.com',
+            'bloggerspoint52@gmail.com',
             [email],
             fail_silently=False,
         )
@@ -145,7 +145,7 @@ def forgot(request):
         send_mail(
             'click the link to change your password BLOGGERS POINT',
             harsh,
-            'khannaharshit064@gmail.com',
+            'bloggerspoint52@gmail.com',
             [email],
             fail_silently=False,
         )
