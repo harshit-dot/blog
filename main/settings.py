@@ -111,8 +111,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'main.wsgi.application'
 import dj_database_url
-DATABASES['default'] = dj_database_url.parse('postgres://hbbrvpeawfrsuj:ccb5ebd3f3af3af97b11e4bb08135e56a1892d288e5d3d372d826e7c75b09346@ec2-18-211-48-247.compute-1.amazonaws.com:5432/db4pi75s57h47o
-', conn_max_age=600)
+DATABASES['default'] = dj_database_url.parse('postgres://hbbrvpeawfrsuj:ccb5ebd3f3af3af97b11e4bb08135e56a1892d288e5d3d372d826e7c75b09346@ec2-18-211-48-247.compute-1.amazonaws.com:5432/db4pi75s57h47o', conn_max_age=600)
 
 
 AUTH_PASSWORD_VALIDATORS = [
