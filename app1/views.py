@@ -8,6 +8,7 @@ from django.contrib.auth import logout as auth_logout
 # import pyautogui
 from django.contrib.auth.models import  User
 from django.core.files.storage import FileSystemStorage
+from django.contrib import messages #import messages
 
 #
 def login(request):
@@ -16,7 +17,7 @@ def login(request):
         password=request.POST['password']
         password1=request.POST['password1']
         if password1!=password:
-#             pyautogui.alert('password not matched')
+            messages.error(request, 'Password not Matched')
             return redirect('/')
 
         user = authenticate(username=username, password=password)
@@ -24,7 +25,8 @@ def login(request):
             auth_login(request,user)
             return redirect('/')
         else:
-#             pyautogui.alert('username or password not matched')
+            messages.error(request, 'Username or Password Wrong')
+
             return redirect('/')
 def main(request):
     from .models import blogpost
@@ -39,7 +41,8 @@ def createblog(request,names):
             filename=fs.save(image.name,image)
             url=fs.url(filename)
         except:
-#             pyautogui.alert('Upload image')
+            messages.error(request,'Upload Image')
+
             bar = get_user_model().objects.get(username=names)
             return render(request, 'app1/createblog.html', {'bar': bar})
         catagoy=request.POST['catagory1']
@@ -49,12 +52,16 @@ def createblog(request,names):
         print(url)
         name1=request.POST['name']
         if catagoy=='' or title=='' or textarea=='' or name1=='':
-#             pyautogui.alert('enter all the fields')
+            messages.error(request,'Enter All The Fields')
+
+            # pyautogui.alert('enter all the fields')
             bar = get_user_model().objects.get(username=names)
             return render(request, 'app1/createblog.html', {'bar': bar})
         from .models import blogpost
         blog=blogpost(catagory=catagory, title=title, textarea=textarea, email=name1, name=names, image=url)
         blog.save()
+        messages.success(request, 'Uploaded')
+
         return redirect('/')
     else:
         bar=get_user_model().objects.get(username=names)
@@ -67,20 +74,24 @@ def contact(request):
         regarding=request.POST['catagory']
         text=request.POST['textarea']
         if email=='' or regarding=='' or text=='':
-#             pyautogui.alert('Enter All The Fields')
+            messages.error(request, 'Enter All The Fields')
+
+            # pyautogui.alert('Enter All The Fields')
             return render(request, 'app1/contact.html')
         send_mail(
             'we have just get your query (BLOGGERS POINT)',
             'we get your query, we will reply it as soon as possible till enjoy blogging....',
-            'bloggerspoint52@gmail.com',
+            'khannaharshit064@gmail.com',
             [email],
             fail_silently=False,
         )
         from .models import contact
         con=contact(email=email, regarding=regarding, text=text)
         con.save()
-#         pyautogui.confirm(' send')
-        return redirect('/')
+        messages.success(request, "Message sent.")
+
+        # pyautogui.confirm(' send')
+        return redirect('contact')
     else:
         return render(request, 'app1/contact.html')
 
@@ -95,18 +106,21 @@ def signup(request):
         last_name=request.POST['lastname']
         email=request.POST['email']
         if username=='' or password=='' or password1=='' or first_name=='' or last_name=='' or email=='':
-#             pyautogui.alert('Enter All The Fields')
+            # pyautogui.alert('Enter All The Fields')
+            messages.error(request,'Enter All The Fields')
             return redirect('/')
 
 
         if password1!=password:
-#             pyautogui.alert(request, 'password not matched')
+            messages.error(request,'Password Not Matched')
+
+            # pyautogui.alert(request, 'password not matched')
             return redirect('/')
 
         send_mail(
             'Wow you have just signed up in BLOGGERS POINT',
             'congratulations your account is now setup. you can login through the main website and enjoy by creating more blogs.....',
-            'bloggerspoint52@gmail.com',
+            'khannaharshit064@gmail.com',
             [email],
             fail_silently=False,
         )
@@ -114,7 +128,8 @@ def signup(request):
         myuser.first_name=first_name
         myuser.last_name=last_name
         myuser.save()
-#         pyautogui.confirm('user created')
+        messages.success(request, 'User Created')
+        # pyautogui.confirm('user created')
         return redirect('/')
 
 
@@ -133,23 +148,30 @@ def forgot(request):
         # if password1!=password:
         #     pyautogui.alert('password did not matched')
         #     return redirect('/')
+        if email=='' or username=='':
+            messages.error(request,'Enter All The Fields')
+            return redirect('forgot')
         bog=User.objects.get(username=username, email=email)
         if bog is None:
-#             pyautogui.alert('username or email wrong')
+            messages.error(request,'Username or Password Wrong')
+
+            # pyautogui.alert('username or email wrong')
             return redirect('/')
+
         # pyautogui.confirm('saved')
         # return redirect('/')
-        harsh='this is the link, click it http://127.0.0.1:8000/forgotpass/'+str(bog.id)
+        harsh='this is the link, click it http://bloggerspoint1.herokuapp.com/forgotpass/'+str(bog.id)
         print(harsh)
         print(bog.password)
         send_mail(
             'click the link to change your password BLOGGERS POINT',
             harsh,
-            'bloggerspoint52@gmail.com',
+            'khannaharshit064@gmail.com',
             [email],
             fail_silently=False,
         )
-#         pyautogui.confirm('mail has been sent to your email')
+        messages.success(request, 'Mail has been sent to your email address.')
+        # pyautogui.confirm('mail has been sent to your email')
         return render(request, 'app1/forgot.html')
 
     else:
@@ -161,12 +183,14 @@ def search(request):
     searchtext=searchtex.lower()
     print(searchtext)
     if len(searchtext)==0:
-#         pyautogui.alert('enter something!')
+        messages.error(request, 'Enter Something')
+        # pyautogui.alert('enter something!')
         return redirect('/')
     from .models import blogpost
     blog=blogpost.objects.filter(catagory=searchtext)
     if len(blog)==0:
-#         pyautogui.alert('not found anything')
+        messages.error(request,' Not Found Anything ')
+        # pyautogui.alert('not found anything')
         return redirect('/')
     else:
         return render(request,'app1/index.html', {'blog':blog})
@@ -185,13 +209,15 @@ def changepassword(request,id):
         password=request.POST['password']
         password1=request.POST['password1']
         if password!=password1:
-#             pyautogui.alert("password not matched")
+            messages.error(request,'Password Not Matched')
+            # pyautogui.alert("password not matched")
             bog = get_user_model().objects.get(id=int(id))
             return render(request, 'app1/forgetpass.html', {'bog': bog})
         bog = get_user_model().objects.get(id=int(id))
         bog.set_password(password)
         bog.save()
-#         pyautogui.confirm('password saved')
+        messages.success(request,'Password Saved')
+        # pyautogui.confirm('password saved')
         return render(request, 'app1/forgot.html')
 def myprofile(request, name):
     bog=get_user_model().objects.get(username=name)
@@ -217,4 +243,3 @@ def deletepost(request,id):
 
 
     return render(request,'app1/myprofile.html',{'bog':bog,'har':har, 'kar':kar})
-
