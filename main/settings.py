@@ -117,18 +117,15 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 DATABASES = {
     'default': {
-        'URI':'postgres://hbbrvpeawfrsuj:ccb5ebd3f3af3af97b11e4bb08135e56a1892d288e5d3d372d826e7c75b09346@ec2-18-211-48-247.compute-1.amazonaws.com:5432/db4pi75s57h47o',
-        'NAME': 'mydb',
-        'USER': 'hbbrvpeawfrsuj',
-        'PASSWORD': 'ccb5ebd3f3af3af97b11e4bb08135e56a1892d288e5d3d372d826e7c75b09346',
-        'HOST': 'e0c2-18-211-48-247.compute-1.amazonaws.com',
-        'PORT': '5432',
-        'Heroku CLI':'heroku pg:psql postgresql-reticulated-37651 --app bloggerspoint1'
-        'DATABASE':'db4pi75s57h47o'
+        'ENGINE':'django.db.database.sqlite3',
+        'NAME': os.path.join(BASE_DIR,'db.sqlite3'),
+       
     }
     
 }
-
+import dj_database_url
+db_from_env=dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
