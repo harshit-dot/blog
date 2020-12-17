@@ -1,4 +1,5 @@
 import django_heroku
+import dj_database_url
 from django.contrib.messages import constants as messages
 
 """
@@ -127,7 +128,8 @@ DATABASES={
       
    }
 }
-
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
