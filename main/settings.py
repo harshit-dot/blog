@@ -1,4 +1,6 @@
 import django_heroku
+from django.contrib.messages import constants as messages
+
 """
 Django settings for main project.
 
@@ -90,6 +92,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+MESSAGE_TAGS = {
+        messages.DEBUG: 'alert-secondary',
+        messages.INFO: 'alert-info',
+        messages.SUCCESS: 'alert-success',
+        messages.WARNING: 'alert-warning',
+        messages.ERROR: 'alert-danger',
+ }
 
 ROOT_URLCONF = 'main.urls'
 
